@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+  <div id="app">
+    <div class="login-card">
+        <h2>Vaccine Tracker</h2>
+
+        <input type="email" placeholder="Email" v-model="email">
+        <input type="password" placeholder="Password" v-model="password">
+
+        <button @click="login">Login</button>
+
+        <div class="error" v-if="error">{{ error }}</div>
+    </div>
+</div>
+
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="/js/login.js"></script>
+
+</body>
+</html>

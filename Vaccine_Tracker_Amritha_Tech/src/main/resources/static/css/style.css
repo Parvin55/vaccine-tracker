@@ -1,0 +1,243 @@
+/* Reset and body styles */
+body {
+	margin: 0;
+	font-family: Arial, sans-serif;
+	background-color: #0b1c2d;
+	color: white;
+}
+
+/* ---------- LOGIN PAGE ---------- */
+.login-card {
+	background-color: #ffffff;
+	padding: 30px;
+	width: 320px;
+	border-radius: 8px;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+	margin: 80px auto; /* center horizontally, some vertical spacing */
+	color: #0b1c2d;
+}
+
+.login-card h2 {
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.login-card input[type="email"], .login-card input[type="password"] {
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 15px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	font-size: 14px;
+	box-sizing: border-box;
+}
+
+.login-card button {
+	width: 100%;
+	padding: 10px;
+	background-color: #0b1c2d;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	font-size: 15px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+.login-card button:hover {
+	background-color: #143a5c;
+}
+
+.login-card .error {
+	color: red;
+	text-align: center;
+	margin-top: 10px;
+	font-size: 14px;
+}
+
+/* ---------- DASHBOARD PAGE ---------- */
+header {
+	background-color: #0b1c2d;
+	padding: 15px 30px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.username {
+	font-size: 20px;
+	font-weight: 600;
+}
+
+.logout-btn {
+	background-color: #c0392b;
+	color: white;
+	border: none;
+	padding: 8px 16px;
+	font-size: 14px;
+	cursor: pointer;
+	border-radius: 4px;
+	transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+	background-color: #e74c3c;
+}
+
+nav {
+	margin: 30px auto;
+	display: flex;
+	gap: 20px;
+	justify-content: center;
+	max-width: 600px;
+}
+
+.menu-btn {
+	background-color: #0b1c2d;
+	color: white;
+	padding: 15px 40px;
+	font-size: 16px;
+	border: none;
+	border-radius: 6px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+	flex: 1;
+	max-width: 200px;
+	text-align: center;
+}
+
+.menu-btn:hover {
+	background-color: #143a5c;
+}
+
+/* Responsive: stack menu buttons on small screens */
+@media ( max-width : 600px) {
+	nav {
+		flex-direction: column;
+		gap: 15px;
+		margin: 30px 15px;
+	}
+}
+
+/* Add-record specific styles */
+#add-record {
+	max-width: 700px;
+	margin: 40px auto;
+	background: #ffffff;
+	color: #0b1c2d;
+	padding: 30px;
+	border-radius: 8px;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+label {
+	display: block;
+	margin-top: 15px;
+	font-weight: 600;
+}
+
+select, input[type="date"] {
+	width: 100%;
+	padding: 10px;
+	margin-top: 6px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	font-size: 14px;
+	box-sizing: border-box;
+}
+
+button.save-btn {
+	margin-top: 20px;
+	background-color: #0b1c2d;
+	color: white;
+	border: none;
+	padding: 12px 20px;
+	border-radius: 4px;
+	font-size: 16px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+button.save-btn:hover {
+	background-color: #143a5c;
+}
+
+/* Table styling */
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 30px;
+}
+
+th, td {
+	border: 1px solid #ddd;
+	padding: 12px;
+	text-align: center;
+}
+
+th {
+	background-color: #0b1c2d;
+	color: white;
+	font-weight: 600;
+}
+
+tr:nth-child(even) {
+	background-color: #f9f9f9;
+}
+
+tr:hover {
+	background-color: #e0e0e0;
+}
+
+/* Action buttons */
+.action-btn {
+	background-color: #2980b9;
+	border: none;
+	color: white;
+	padding: 6px 12px;
+	margin: 0 3px;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 14px;
+	transition: background-color 0.3s ease;
+}
+
+.action-btn.edit-btn:hover {
+	background-color: #3498db;
+}
+
+.action-btn.delete-btn {
+	background-color: #c0392b;
+}
+
+.action-btn.delete-btn:hover {
+	background-color: #e74c3c;
+}
+
+/* Responsive */
+@media ( max-width : 600px) {
+	#add-record {
+		margin: 20px 10px;
+		padding: 20px;
+	}
+	table, th, td {
+		font-size: 12px;
+	}
+	button.save-btn {
+		width: 100%;
+	}
+	
+}
+
+.text-red {
+	color: #c0392b; /* red */
+}
+
+.text-orange {
+	color: #e67e22; /* orange */
+}
+
+.text-green {
+	color: #27ae60; /* green */
+}

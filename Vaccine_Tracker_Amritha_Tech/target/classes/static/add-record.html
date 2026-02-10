@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Add Immunization Record</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+<div id="app">
+  <header>
+    <div class="username">Hi, {{ username }}</div>
+    <button class="logout-btn" @click="logout">Logout</button>
+  </header>
+
+  <nav>
+    <button class="menu-btn" @click="navigateToAddRecord">Add Record</button>
+    <button class="menu-btn" @click="navigateToReport">Report</button>
+  </nav>
+</div>
+  <div id="add-record">
+    <h2>Add Immunization Record</h2>
+
+    <label for="vaccine-select">Select Vaccine:</label>
+    <select id="vaccine-select" v-model="selectedVaccineId">
+      <option disabled value="">-- Select Vaccine --</option>
+      <option v-for="vaccine in vaccines" :key="vaccine.id" :value="vaccine.id">
+        {{ vaccine.name }}
+      </option>
+    </select>
+
+    <label for="dose-date">Dose Date:</label>
+    <input type="date" id="dose-date" v-model="doseDate" />
+
+    <button class="save-btn" @click="saveRecord" :disabled="!canSave">Save</button>
+
+    <table v-if="records.length > 0" aria-label="Immunization Records">
+      <thead>
+        <tr>
+          <th>SI No.</th>
+          <th>Vaccine Name</th>
+          <th>Dose Date</th>
+          <th>Next Due Date</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(record, index) in records" :key="record.id">
+          <td>{{ index + 1 }}</td>
+          <td>{{ record.vaccine.name }}</td>
+          <td>{{ formatDate(record.doseDate) }}</td>
+          <td>{{ formatDate(record.nextDueDate) }}</td>
+          <td :class="statusClass(record.status)">{{ record.status }}</td>
+          <td>
+            <button class="action-btn edit-btn" @click="startEdit(record)">Edit</button>
+            <button class="action-btn delete-btn" @click="deleteRecord(record.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Edit modal / inline edit could be added here for better UX -->
+  </div>
+
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    const { createApp } = Vue;
+
+    createApp({
+      data() {
+        return {
+          userId: null,
+          vaccines: [],
+          records: [],
+          selectedVaccineId: '',
+          doseDate: '',
+          editRecordId: null,
+        };
+      },
+      computed: {
+        canSave() {
+          return this.selectedVaccineId && this.doseDate;
+        }
+      },
+      methods: {
+        fetchVaccines() {
+          // Fetch vaccine list from API
+          axios.get('http://localhost:8080/api/vaccines')
+            .then(res => {
+              this.vaccines = res.data;
+            })
+            .catch(err => {
+              console.error('Failed to fetch vaccines:', err);
+              alert('Failed to load vaccines. Please try again.');
+            });
+        },
+        fetchRecords() {
+          if (!this.userId) return;
+          axios.get(`http://localhost:8080/api/immunizations/user/${this.userId}`)
+            .then(res => {
+              this.records = res.data;
+            })
+            .catch(err => {
+              console.error('Failed to fetch records:', err);
+            });
+        },
+         navigateToAddRecord() {
+            window.location.href = 'add-record.html';
+          },
+          navigateToReport() {
+            window.location.href = 'report.html';
+          },
+        saveRecord() {
+          if (!this.canSave) return;
+
+          const payload = {
+            userId: this.userId,
+            vaccineId: this.selectedVaccineId,
+            doseDate: this.doseDate
+          };
+
+          axios.post('http://localhost:8080/api/immunizations', payload)
+            .then(res => {
+              alert('Record saved successfully.');
+              this.clearForm();
+              this.fetchRecords();
+            })
+            .catch(err => {
+              console.error('Failed to save record:', err);
+              alert('Failed to save record. Please try again.');
+            });
+        },
+        deleteRecord(id) {
+          // Assuming you have an API for deleting records, else remove from UI only
+          if (!confirm('Are you sure you want to delete this record?')) return;
+
+          axios.delete(`http://localhost:8080/api/immunizations/${id}`)
+            .then(() => {
+              this.records = this.records.filter(r => r.id !== id);
+            })
+            .catch(err => {
+              console.error('Failed to delete record:', err);
+              alert('Failed to delete record.');
+            });
+        },
+        startEdit(record) {
+          // Optional: You can implement inline editing or a modal
+          alert('Edit functionality is not implemented yet.');
+        },
+        formatDate(dateStr) {
+          if (!dateStr) return '-';
+          const d = new Date(dateStr);
+          return d.toLocaleDateString();
+        },
+        statusClass(status) {
+          switch (status) {
+            case 'OVERDUE': return 'text-red';
+            case 'DUE TODAY': return 'text-orange';
+            case 'UPCOMING': return 'text-green';
+            default: return '';
+          }
+        },
+        clearForm() {
+          this.selectedVaccineId = '';
+          this.doseDate = '';
+        },
+        checkLogin() {
+          this.userId = localStorage.getItem('userId');
+          if (!this.userId) {
+            window.location.href = 'login.html';
+          }
+        }
+      },
+      mounted() {
+        this.checkLogin();
+        this.fetchVaccines();
+        this.fetchRecords();
+      }
+    }).mount('#add-record');
+  </script>
+</body>
+</html>
